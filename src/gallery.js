@@ -199,6 +199,7 @@ export class Gallery {
     this.scroll.current = -2.6;
     this.scroll.target = 0;
     this.scroll.enabled = true;
+    this.scroll.autoDrift = true; // subtle idle drift hints the gallery scrolls
     gsap.to(this, { reveal: 1, duration: 1.9, ease: 'power3.out' });
   }
 

@@ -449,6 +449,39 @@ body.menu-open .view-toggle {
 .lightbox-close span:nth-child(1) { transform: rotate(45deg); }
 .lightbox-close span:nth-child(2) { transform: rotate(-45deg); }
 
+.lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 54px; height: 54px;
+  border-radius: 50%;
+  border: 1px solid rgba(253, 243, 231, 0.28);
+  background: rgba(27, 15, 30, 0.5);
+  backdrop-filter: blur(8px);
+  color: var(--ink);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s ease, background 0.3s ease;
+}
+.lightbox-nav svg { width: 24px; height: 24px; }
+.lightbox-nav:hover {
+  border-color: rgba(253, 243, 231, 0.6);
+  background: rgba(27, 15, 30, 0.75);
+}
+.lightbox-prev { left: 24px; }
+.lightbox-next { right: 24px; }
+.lightbox-prev:hover { transform: translateY(-50%) translateX(-3px); }
+.lightbox-next:hover { transform: translateY(-50%) translateX(3px); }
+
+@media (max-width: 640px) {
+  .lightbox-nav { width: 46px; height: 46px; bottom: 26px; top: auto; transform: none; }
+  .lightbox-nav svg { width: 20px; height: 20px; }
+  .lightbox-prev { left: 22px; }
+  .lightbox-next { right: 22px; }
+  .lightbox-prev:hover, .lightbox-next:hover { transform: none; }
+}
+
 /* ---------- intro ---------- */
 .intro {
   position: fixed;

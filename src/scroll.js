@@ -12,6 +12,12 @@ export class VirtualScroll {
     this.velocity = 0;
     this.enabled = false;
 
+    // very subtle idle auto-drift: hints that the gallery scrolls. Runs once
+    // enabled, pauses on manual input, resumes after driftResumeDelay.
+    this.autoDrift = false;
+    this.driftSpeed = 0.0016;      // ~one card every ~10s
+    this.driftResumeDelay = 2600;  // ms of stillness before drift kicks back in
+
     this.dragging = false;
     this.lastInputAt = 0;
     this.lastY = 0;
@@ -76,9 +82,13 @@ export class VirtualScroll {
 
   update() {
     const idleFor = performance.now() - this.lastInputAt;
+    const settled = this.enabled && !this.dragging;
 
-    // gentle magnetic snap to the nearest card once input settles
-    if (this.enabled && !this.dragging && idleFor > 260) {
+    if (settled && this.autoDrift && idleFor > this.driftResumeDelay) {
+      // continuous gentle creep forward; no snap so it stays smooth
+      this.target += this.driftSpeed;
+    } else if (settled && idleFor > 260) {
+      // gentle magnetic snap to the nearest card once manual input settles
       const snapped = Math.round(this.target / this.snapStep) * this.snapStep;
       this.target += (snapped - this.target) * 0.065;
     }

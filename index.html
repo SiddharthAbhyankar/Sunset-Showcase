@@ -3,8 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>sunset — a golden hour gallery</title>
-  <meta name="description" content="A one-page sunset photography gallery. Scroll through the spiral." />
+  <title>Sunset Showcase — a golden hour gallery by Sid</title>
+  <meta name="description" content="A collection of sunsets, caught at golden hour. Scroll through the spiral." />
+
+  <!-- Open Graph / social share previews -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Sunset Showcase" />
+  <meta property="og:title" content="Sunset Showcase — a golden hour gallery by Sid" />
+  <meta property="og:description" content="A collection of sunsets, caught at golden hour. Scroll through the spiral." />
+  <meta property="og:url" content="https://sunset-showcase.vercel.app/" />
+  <meta property="og:image" content="https://sunset-showcase.vercel.app/og-image.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="A golden-hour sunset over the sea with a bridge on the horizon." />
+
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Sunset Showcase — a golden hour gallery by Sid" />
+  <meta name="twitter:description" content="A collection of sunsets, caught at golden hour. Scroll through the spiral." />
+  <meta name="twitter:image" content="https://sunset-showcase.vercel.app/og-image.jpg" />
+
+  <meta name="theme-color" content="#170d1d" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
@@ -75,6 +95,12 @@
   <div class="lightbox" id="lightbox" aria-hidden="true">
     <img class="lightbox-img" id="lightbox-img" alt="" />
     <div class="lightbox-caption" id="lightbox-caption"></div>
+    <button class="lightbox-nav lightbox-prev" id="lightbox-prev" aria-label="previous photo">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <button class="lightbox-nav lightbox-next" id="lightbox-next" aria-label="next photo">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
     <button class="lightbox-close" id="lightbox-close" aria-label="close">
       <span></span><span></span>
     </button>

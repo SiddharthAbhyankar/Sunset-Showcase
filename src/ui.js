@@ -108,39 +108,82 @@ export function initUI({ gallery, scroll, ambient }) {
   const lightboxImg = document.getElementById('lightbox-img');
   const lightboxCaption = document.getElementById('lightbox-caption');
   const lightboxClose = document.getElementById('lightbox-close');
+  const lightboxPrev = document.getElementById('lightbox-prev');
+  const lightboxNext = document.getElementById('lightbox-next');
   let lightboxOpen = false;
+  let lightboxIndex = 0;
 
-  function openLightbox(card) {
-    lightboxOpen = true;
-    scroll.enabled = false;
-
-    // source for the big image: real photo or the placeholder canvas
-    const tex = card.material.uniforms.uMap.value;
-    lightboxImg.src = card.img.src || tex.image.toDataURL('image/jpeg', 0.92);
-    lightboxCaption.innerHTML = `<span>${card.img.title}</span><span class="cap-year">${card.img.year}</span>`;
-
-    const from = gallery.screenRect(card);
+  // fullscreen fit rect for a given card's aspect ratio
+  function fitRect(card) {
     const margin = Math.min(window.innerWidth, window.innerHeight) * 0.08;
     const availW = window.innerWidth - margin * 2;
     const availH = window.innerHeight - margin * 2;
     const aspect = card.w / card.h;
-    let toW = availW, toH = availW / aspect;
-    if (toH > availH) { toH = availH; toW = availH * aspect; }
-    const toX = (window.innerWidth - toW) / 2;
-    const toY = (window.innerHeight - toH) / 2;
+    let w = availW, h = availW / aspect;
+    if (h > availH) { h = availH; w = availH * aspect; }
+    return { w, h, x: (window.innerWidth - w) / 2, y: (window.innerHeight - h) / 2 };
+  }
+
+  function imgSrc(card) {
+    const tex = card.material.uniforms.uMap.value;
+    return card.img.src || tex.image.toDataURL('image/jpeg', 0.92);
+  }
+
+  function setCaption(card) {
+    lightboxCaption.innerHTML = `<span>${card.img.title}</span><span class="cap-year">${card.img.year}</span>`;
+  }
+
+  function openLightbox(card) {
+    lightboxOpen = true;
+    lightboxIndex = card.i;
+    scroll.enabled = false;
+
+    lightboxImg.src = imgSrc(card);
+    setCaption(card);
+
+    const from = gallery.screenRect(card);
+    const to = fitRect(card);
 
     gsap.set(lightbox, { autoAlpha: 1 });
     lightbox.classList.add('is-open');
     gsap.fromTo(
       lightboxImg,
       { left: from.x, top: from.y, width: from.w, height: from.h },
-      { left: toX, top: toY, width: toW, height: toH, duration: 0.85, ease: 'expo.inOut' }
+      { left: to.x, top: to.y, width: to.w, height: to.h, duration: 0.85, ease: 'expo.inOut' }
     );
     gsap.fromTo(
-      [lightboxCaption, lightboxClose],
+      [lightboxCaption, lightboxClose, lightboxPrev, lightboxNext],
       { opacity: 0, y: 14 },
       { opacity: 1, y: 0, duration: 0.5, delay: 0.5, ease: 'power2.out' }
     );
+  }
+
+  // step to the next/prev photo without leaving the lightbox
+  function navigate(dir) {
+    if (!lightboxOpen) return;
+    const n = gallery.cards.length;
+    lightboxIndex = (lightboxIndex + dir + n) % n;
+    const card = gallery.cards[lightboxIndex];
+
+    // keep the gallery in sync so closing returns to this photo
+    scroll.scrollTo(scroll.target - card.phase);
+
+    const to = fitRect(card);
+    const slide = dir > 0 ? -40 : 40;
+
+    gsap.killTweensOf(lightboxImg);
+    gsap.to(lightboxImg, {
+      opacity: 0,
+      x: slide,
+      duration: 0.22,
+      ease: 'power2.in',
+      onComplete: () => {
+        lightboxImg.src = imgSrc(card);
+        setCaption(card);
+        gsap.set(lightboxImg, { left: to.x, top: to.y, width: to.w, height: to.h, x: -slide });
+        gsap.to(lightboxImg, { opacity: 1, x: 0, duration: 0.34, ease: 'power2.out' });
+      },
+    });
   }
 
   function closeLightbox() {
@@ -158,6 +201,8 @@ export function initUI({ gallery, scroll, ambient }) {
   }
 
   lightboxClose.addEventListener('click', closeLightbox);
+  lightboxPrev.addEventListener('click', (e) => { e.stopPropagation(); navigate(-1); });
+  lightboxNext.addEventListener('click', (e) => { e.stopPropagation(); navigate(1); });
   lightbox.addEventListener('click', (e) => {
     if (e.target === lightbox) closeLightbox();
   });
@@ -165,7 +210,21 @@ export function initUI({ gallery, scroll, ambient }) {
     if (e.key === 'Escape') {
       closeLightbox();
       if (menuOpen) setMenu(false);
+    } else if (lightboxOpen && e.key === 'ArrowRight') {
+      navigate(1);
+    } else if (lightboxOpen && e.key === 'ArrowLeft') {
+      navigate(-1);
     }
+  });
+
+  // swipe left/right within the lightbox (mobile)
+  let swipeX = null;
+  lightbox.addEventListener('pointerdown', (e) => { if (lightboxOpen) swipeX = e.clientX; });
+  lightbox.addEventListener('pointerup', (e) => {
+    if (swipeX === null) return;
+    const dx = e.clientX - swipeX;
+    swipeX = null;
+    if (Math.abs(dx) > 50) navigate(dx < 0 ? 1 : -1);
   });
 
   // ---------- card clicks ----------
