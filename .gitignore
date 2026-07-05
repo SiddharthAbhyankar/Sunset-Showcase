@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.DS_Store
+*.log
+
+# raw phone-camera uploads (originals, videos, HEIC) — not used by the build;
+# the site reads resized copies from public/images instead
+/Sunsets/

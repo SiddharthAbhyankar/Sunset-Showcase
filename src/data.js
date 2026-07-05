@@ -1,0 +1,35 @@
+// Gallery manifest — Sid's sunset photographs.
+// Images live in /public/images (resized to 1920px long edge, EXIF-baked).
+// Set src to null on any entry to fall back to a procedural placeholder.
+
+export const IMAGES = [
+  { title: 'golden hour',      year: '2024', orientation: 'landscape', src: '/images/img-01.jpg' },
+  { title: 'violet hour',      year: '2024', orientation: 'portrait',  src: '/images/img-02.jpg' },
+  { title: 'ember sky',        year: '2025', orientation: 'landscape', src: '/images/img-03.jpg' },
+  { title: 'last light',       year: '2024', orientation: 'portrait',  src: '/images/img-04.jpg' },
+  { title: 'afterglow',        year: '2025', orientation: 'landscape', src: '/images/img-05.jpg' },
+  { title: 'horizon line',     year: '2025', orientation: 'portrait',  src: '/images/img-06.jpg' },
+  { title: 'amber tide',       year: '2025', orientation: 'landscape', src: '/images/img-07.jpg' },
+  { title: 'salt & fire',      year: '2025', orientation: 'portrait',  src: '/images/img-08.jpg' },
+  { title: 'west of here',     year: '2026', orientation: 'landscape', src: '/images/img-09.jpg' },
+  { title: 'sundown',          year: '2025', orientation: 'portrait',  src: '/images/img-10.jpg' },
+  { title: 'dusk marina',      year: '2026', orientation: 'landscape', src: '/images/img-11.jpg' },
+  { title: 'the long light',   year: '2025', orientation: 'portrait',  src: '/images/img-12.jpg' },
+  { title: 'molten sea',       year: '2026', orientation: 'landscape', src: '/images/img-13.jpg' },
+  { title: 'copper dusk',      year: '2025', orientation: 'portrait',  src: '/images/img-14.jpg' },
+  { title: 'slow burn',        year: '2026', orientation: 'landscape', src: '/images/img-15.jpg' },
+  { title: 'tangerine',        year: '2025', orientation: 'portrait',  src: '/images/img-16.jpg' },
+  { title: 'low sun',          year: '2026', orientation: 'landscape', src: '/images/img-17.jpg' },
+  { title: 'rose horizon',     year: '2025', orientation: 'portrait',  src: '/images/img-18.jpg' },
+  { title: 'blood orange',     year: '2026', orientation: 'landscape', src: '/images/img-19.jpg' },
+  { title: 'quiet fire',       year: '2025', orientation: 'portrait',  src: '/images/img-20.jpg' },
+  { title: 'gilded bay',       year: '2026', orientation: 'landscape', src: '/images/img-21.jpg' },
+  { title: 'last ferry',       year: '2025', orientation: 'portrait',  src: '/images/img-22.jpg' },
+  { title: 'wide amber',       year: '2026', orientation: 'landscape', src: '/images/img-23.jpg' },
+  { title: 'late glow',        year: '2025', orientation: 'portrait',  src: '/images/img-24.jpg' },
+  { title: 'paper sky',        year: '2025', orientation: 'portrait',  src: '/images/img-25.jpg' },
+  { title: 'warm static',      year: '2026', orientation: 'portrait',  src: '/images/img-26.jpg' },
+  { title: 'hush',             year: '2026', orientation: 'portrait',  src: '/images/img-27.jpg' },
+  { title: 'long shadow',      year: '2026', orientation: 'portrait',  src: '/images/img-28.jpg' },
+  { title: 'one more evening', year: '2026', orientation: 'portrait',  src: '/images/img-29.jpg' },
+];

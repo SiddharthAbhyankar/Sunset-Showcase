@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>sunset — a golden hour gallery</title>
+  <meta name="description" content="A one-page sunset photography gallery. Scroll through the spiral." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><radialGradient id='g' cx='50%25' cy='40%25'><stop offset='0%25' stop-color='%23ffd9a0'/><stop offset='55%25' stop-color='%23ff8a3d'/><stop offset='100%25' stop-color='%23b03a5b'/></radialGradient></defs><circle cx='50' cy='50' r='46' fill='url(%23g)'/></svg>" />
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- WebGL canvas -->
+  <div id="webgl"></div>
+
+  <!-- HTML labels for list view -->
+  <div id="labels" aria-hidden="true"></div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <a class="logo" href="#" aria-label="Sid — home">Sid</a>
+
+    <nav class="view-toggle" aria-label="gallery view">
+      <span class="view-toggle-thumb" aria-hidden="true"></span>
+      <button class="view-btn is-active" data-view="spiral">spiral</button>
+      <button class="view-btn" data-view="list">list</button>
+    </nav>
+
+    <button class="menu-pill" id="menu-btn" aria-expanded="false">
+      <span class="menu-pill-label" data-open="menu" data-close="close">menu</span>
+      <span class="menu-pill-dot" aria-hidden="true"></span>
+    </button>
+  </header>
+
+  <!-- Corner marquee badge -->
+  <div class="corner-badge" aria-hidden="true">
+    <svg viewBox="0 0 300 300" class="corner-badge-svg">
+      <defs>
+        <path id="badge-circle" d="M150,150 m-118,0 a118,118 0 1,1 236,0 a118,118 0 1,1 -236,0" />
+      </defs>
+      <text class="corner-badge-text">
+        <textPath href="#badge-circle">sunset&#160;&#160;•&#160;&#160;golden hour&#160;&#160;•&#160;&#160;2026&#160;&#160;•&#160;&#160;sunset&#160;&#160;•&#160;&#160;golden hour&#160;&#160;•&#160;&#160;2026&#160;&#160;•&#160;&#160;</textPath>
+      </text>
+    </svg>
+    <span class="corner-badge-disc"></span>
+  </div>
+
+  <!-- Sound toggle -->
+  <button class="sound-btn" id="sound-btn" aria-label="toggle sound" aria-pressed="false">
+    <span class="eq"><i></i><i></i><i></i><i></i></span>
+  </button>
+
+  <!-- Menu overlay -->
+  <div class="menu-overlay" id="menu-overlay" aria-hidden="true">
+    <nav class="menu-nav">
+      <a href="#" class="menu-link" data-menu-close><span class="menu-index">01</span>gallery</a>
+      <a href="#about" class="menu-link"><span class="menu-index">02</span>about</a>
+      <a href="mailto:abhyankar.siddharth@gmail.com" class="menu-link"><span class="menu-index">03</span>contact</a>
+    </nav>
+    <div class="menu-footer">
+      <div class="menu-socials">
+        <a href="#" target="_blank" rel="noopener">instagram</a>
+        <a href="#" target="_blank" rel="noopener">x</a>
+        <a href="#" target="_blank" rel="noopener">behance</a>
+      </div>
+      <p class="menu-tag">chasing the last light — every day</p>
+    </div>
+  </div>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <img class="lightbox-img" id="lightbox-img" alt="" />
+    <div class="lightbox-caption" id="lightbox-caption"></div>
+    <button class="lightbox-close" id="lightbox-close" aria-label="close">
+      <span></span><span></span>
+    </button>
+  </div>
+
+  <!-- Intro / enter screen -->
+  <div class="intro" id="intro">
+    <div class="intro-inner">
+      <p class="intro-kicker">a golden hour gallery by Sid.</p>
+      <h1 class="intro-title">Sunset Showcase</h1>
+      <div class="intro-actions">
+        <button class="intro-btn" id="enter-sound">enter with sound</button>
+        <button class="intro-btn intro-btn--ghost" id="enter-silent">enter without sound</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
