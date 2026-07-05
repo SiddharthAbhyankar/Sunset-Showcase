@@ -13,10 +13,11 @@ export class VirtualScroll {
     this.enabled = false;
 
     this.dragging = false;
-    this.pointerMoved = 0;
     this.lastInputAt = 0;
     this.lastY = 0;
     this.lastX = 0;
+    this.downY = 0;
+    this.downX = 0;
 
     this.onWheel = this.onWheel.bind(this);
     this.onPointerDown = this.onPointerDown.bind(this);
@@ -34,16 +35,15 @@ export class VirtualScroll {
     if (!this.enabled) return;
     e.preventDefault();
     const delta = Math.max(-140, Math.min(140, e.deltaY));
-    this.target += delta * 0.0021;
+    this.target += delta * 0.0026;
     this.lastInputAt = performance.now();
   }
 
   onPointerDown(e) {
     if (!this.enabled) return;
     this.dragging = true;
-    this.pointerMoved = 0;
-    this.lastY = e.clientY;
-    this.lastX = e.clientX;
+    this.downX = this.lastX = e.clientX;
+    this.downY = this.lastY = e.clientY;
     this.lastInputAt = performance.now();
     this.el.classList.add('is-grabbing');
   }
@@ -51,9 +51,8 @@ export class VirtualScroll {
   onPointerMove(e) {
     if (!this.dragging) return;
     const dy = e.clientY - this.lastY;
-    const dx = e.clientX - this.lastX;
-    this.pointerMoved += Math.abs(dy) + Math.abs(dx);
-    this.target -= dy * 0.0052;
+    // drag down advances (matches wheel: down = forward)
+    this.target += dy * 0.0064;
     this.lastY = e.clientY;
     this.lastX = e.clientX;
     this.lastInputAt = performance.now();
@@ -64,9 +63,10 @@ export class VirtualScroll {
     this.el.classList.remove('is-grabbing');
   }
 
-  // Was this pointerup a click (vs a drag)?
+  // Was this a tap, not a drag? Measure straight-line displacement from the
+  // press point so a jittery finger during a tap still counts as a click.
   wasClick() {
-    return this.pointerMoved < 6;
+    return Math.hypot(this.lastX - this.downX, this.lastY - this.downY) < 12;
   }
 
   scrollTo(value) {

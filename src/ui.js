@@ -169,8 +169,14 @@ export function initUI({ gallery, scroll, ambient }) {
   });
 
   // ---------- card clicks ----------
-  gallery.container.addEventListener('pointerup', () => {
+  gallery.container.addEventListener('pointerup', (e) => {
     if (!scroll.enabled || !scroll.wasClick()) return;
+    // aim the raycaster at the exact release point (touch taps may fire no
+    // pointermove, leaving the hover position stale)
+    gallery.pointerNdc.set(
+      (e.clientX / window.innerWidth) * 2 - 1,
+      -(e.clientY / window.innerHeight) * 2 + 1
+    );
     const card = gallery.raycast();
     if (!card) return;
 
