@@ -87,6 +87,10 @@ body::after {
   position: fixed;
   inset: 0;
   z-index: 1;
+  /* stop the browser hijacking touch drags as pan/scroll (kills mobile drag) */
+  touch-action: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 #webgl canvas { display: block; }
 #webgl.is-grabbing { cursor: grabbing; }
@@ -185,6 +189,29 @@ body.menu-open .view-toggle {
   transition: transform 0.4s ease;
 }
 .menu-pill.is-open .menu-pill-dot { transform: scale(1.4); background: var(--rose); }
+
+/* hamburger — shown only on mobile, in place of the "menu" label */
+.menu-hamburger {
+  display: none;
+  position: relative;
+  width: 18px;
+  height: 12px;
+}
+.menu-hamburger i {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--pill-ink);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s ease;
+}
+.menu-hamburger i:nth-child(1) { top: 0; }
+.menu-hamburger i:nth-child(2) { top: 5px; }
+.menu-hamburger i:nth-child(3) { top: 10px; }
+.menu-pill.is-open .menu-hamburger i:nth-child(1) { transform: translateY(5px) rotate(45deg); }
+.menu-pill.is-open .menu-hamburger i:nth-child(2) { opacity: 0; }
+.menu-pill.is-open .menu-hamburger i:nth-child(3) { transform: translateY(-5px) rotate(-45deg); }
 
 /* ---------- corner badge ---------- */
 .corner-badge {
@@ -485,4 +512,16 @@ body.menu-open .view-toggle {
   .corner-badge-disc { width: 104px; height: 104px; }
   .sound-btn { right: 18px; bottom: 18px; }
   .menu-footer { flex-direction: column; align-items: flex-start; }
+
+  /* menu pill collapses to a hamburger icon only */
+  .menu-pill {
+    gap: 0;
+    padding: 12px;
+    width: 44px;
+    height: 44px;
+    justify-content: center;
+  }
+  .menu-pill-label,
+  .menu-pill-dot { display: none; }
+  .menu-hamburger { display: block; }
 }
